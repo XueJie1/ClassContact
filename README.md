@@ -1,5 +1,6 @@
 # ClassContact
 English | [简体中文](./README_zh-CN.md)
+
 Course Design for HEBUST java course - a Class Contact Directory System
 ## Project Requirements
 Requirements:
