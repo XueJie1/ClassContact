@@ -12,13 +12,9 @@ public class ExportToExcel {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("学生信息");
 
-<<<<<<< HEAD
         // String[] columnHeadings = { "学号", "姓名", "生日", "性别", "电话", "班级", "宿舍", "籍贯",
         // "照片" };
         String[] columnHeadings = { "学号", "姓名", "生日", "性别", "电话", "班级", "宿舍", "籍贯" };
-=======
-        String[] columnHeadings = { "学号", "姓名", "生日", "性别", "电话", "班级", "宿舍", "籍贯", "照片" };
->>>>>>> a081628556944732175c0138f70c0c36571ba841
         Row headerRow = sheet.createRow(0);
 
         for (int i = 0; i < columnHeadings.length; i++) {
@@ -38,11 +34,7 @@ public class ExportToExcel {
             row.createCell(5).setCellValue(student.getClazz());
             row.createCell(6).setCellValue(student.getDorm());
             row.createCell(7).setCellValue(student.getOrigin());
-<<<<<<< HEAD
             // row.createCell(8).setCellValue(student.getPhotoPath());
-=======
-            row.createCell(8).setCellValue(student.getPhotoPath());
->>>>>>> a081628556944732175c0138f70c0c36571ba841
         }
 
         try (FileOutputStream fileOut = new FileOutputStream("students.xlsx")) {

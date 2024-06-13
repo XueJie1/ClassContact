@@ -11,7 +11,6 @@ public class Student {
     private String clazz;
     private String dorm;
     private String origin;
-<<<<<<< HEAD
     private ImageIcon photo;
     private String photoPath; // 添加照片路径字段
 
@@ -30,12 +29,6 @@ public class Student {
     }
 
     // Getter 和 Setter 方法
-=======
-    private String photoPath;
-    private ImageIcon photo;
-
-    // Getters and Setters
->>>>>>> a081628556944732175c0138f70c0c36571ba841
     public String getId() {
         return id;
     }
@@ -100,7 +93,6 @@ public class Student {
         this.origin = origin;
     }
 
-<<<<<<< HEAD
     public ImageIcon getPhoto() {
         return photo;
     }
@@ -115,18 +107,5 @@ public class Student {
 
     public void setPhotoPath(String photoPath) {
         this.photoPath = photoPath; // 添加照片路径的 setter 方法
-=======
-    public String getPhotoPath() {
-        return photoPath;
-    }
-
-    public void setPhotoPath(String photoPath) {
-        this.photoPath = photoPath;
-        this.photo = new ImageIcon(photoPath);
-    }
-
-    public ImageIcon getPhoto() {
-        return photo;
->>>>>>> a081628556944732175c0138f70c0c36571ba841
     }
 }
