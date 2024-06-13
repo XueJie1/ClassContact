@@ -1,4 +1,4 @@
-# ClassContact 班级联系人
+# ClassContact 班级通讯录系统
 [English](./README.md) | 简体中文
 
 HEBUST java课程设计 —— 班级通讯录系统
