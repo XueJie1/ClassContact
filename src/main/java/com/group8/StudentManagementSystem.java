@@ -7,6 +7,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class StudentManagementSystem extends JFrame {
     private ArrayList<Student> studentList = new ArrayList<>();
@@ -15,7 +19,7 @@ public class StudentManagementSystem extends JFrame {
     private JComboBox<String> classComboBox;
 
     public StudentManagementSystem() {
-        setTitle("学生信息管理系统");
+        setTitle("班级通讯录系统");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -87,11 +91,16 @@ public class StudentManagementSystem extends JFrame {
 
         // 添加按班级显示学生信息的下拉框和按钮
         classComboBox = new JComboBox<>();
+        classComboBox.addItem("显示所有班级"); // 添加 "显示所有班级" 选项
         JButton showClassButton = new JButton("显示班级学生");
         showClassButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String selectedClass = (String) classComboBox.getSelectedItem();
-                searchStudent("按班级", selectedClass);
+                if ("显示所有班级".equals(selectedClass)) {
+                    displayAllStudents();
+                } else {
+                    searchStudent("按班级", selectedClass);
+                }
             }
         });
 
@@ -113,7 +122,7 @@ public class StudentManagementSystem extends JFrame {
 
     public void addStudent(Student student) {
         studentList.add(student);
-        tableModel.addRow(new Object[] {
+        tableModel.addRow(new Object[]{
                 student.getId(),
                 student.getName(),
                 student.getBirthday(),
@@ -125,11 +134,13 @@ public class StudentManagementSystem extends JFrame {
                 student.getPhoto()
         });
 
-        // 更新班级下拉框
-        if (((DefaultComboBoxModel<String>) classComboBox.getModel()).getIndexOf(student.getClazz()) == -1) {
+        // 更新班级下拉框，避免重复添加班级
+        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) classComboBox.getModel();
+        if (model.getIndexOf(student.getClazz()) == -1) {
             classComboBox.addItem(student.getClazz());
         }
     }
+
 
     public void searchStudent(String searchType, String searchText) {
         DefaultTableModel newTableModel = new DefaultTableModel(
@@ -181,16 +192,67 @@ public class StudentManagementSystem extends JFrame {
             }
         });
     }
+    private void displayAllStudents() {
+        DefaultTableModel newTableModel = new DefaultTableModel(new String[]{"学号", "姓名", "生日", "性别", "电话", "班级", "宿舍", "籍贯", "照片"}, 0);
+        for (Student student : studentList) {
+            newTableModel.addRow(new Object[]{
+                    student.getId(),
+                    student.getName(),
+                    student.getBirthday(),
+                    student.getGender(),
+                    student.getPhone(),
+                    student.getClazz(),
+                    student.getDorm(),
+                    student.getOrigin(),
+                    student.getPhoto()
+            });
+        }
+        table.setModel(newTableModel);
+        table.getColumn("照片").setCellRenderer(new ImageRenderer());
+    }
+
 }
 
+
+
 class ImageRenderer extends DefaultTableCellRenderer {
+    private int maxWidth;
+    private int maxHeight;
+
+    public ImageRenderer(int maxWidth, int maxHeight) {
+        this.maxWidth = maxWidth;
+        this.maxHeight = maxHeight;
+    }
+
     @Override
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-            int row, int column) {
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         if (value instanceof ImageIcon) {
-            return new JLabel((ImageIcon) value);
+            ImageIcon originalIcon = (ImageIcon) value;
+            Image scaledImage = getScaledImage(originalIcon.getImage(), maxWidth, maxHeight);
+            return new JLabel(new ImageIcon(scaledImage));
         } else {
             return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         }
+    }
+
+    private Image getScaledImage(Image srcImg, int maxWidth, int maxHeight) {
+        BufferedImage resizedImg = new BufferedImage(maxWidth, maxHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = resizedImg.createGraphics();
+
+        // Compute scaling factor
+        double scaleWidth = (double) maxWidth / srcImg.getWidth(null);
+        double scaleHeight = (double) maxHeight / srcImg.getHeight(null);
+        double scale = Math.min(scaleWidth, scaleHeight);
+
+        // Compute scaled dimensions
+        int width = (int) (srcImg.getWidth(null) * scale);
+        int height = (int) (srcImg.getHeight(null) * scale);
+
+        // Draw the scaled image
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(srcImg, 0, 0, width, height, null);
+        g2.dispose();
+
+        return resizedImg;
     }
 }
