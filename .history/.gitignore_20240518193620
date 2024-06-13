@@ -1,5 +1,0 @@
-*.xlsx
-*.docx
-.gitignore
-*.jar
-target
