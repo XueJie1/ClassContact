@@ -29,9 +29,9 @@ public class ExportToWord {
             run.addBreak();
             run.setText("籍贯: " + student.getOrigin());
             run.addBreak();
-            run.setText("照片路径: " + student.getPhotoPath());
-            run.addBreak();
-            run.addBreak();
+            // run.setText("照片路径: " + student.getPhotoPath());
+            // run.addBreak();
+            // run.addBreak();
         }
 
         try (FileOutputStream out = new FileOutputStream("students.docx")) {

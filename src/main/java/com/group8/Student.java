@@ -11,10 +11,24 @@ public class Student {
     private String clazz;
     private String dorm;
     private String origin;
-    private String photoPath;
     private ImageIcon photo;
+    private String photoPath; // 添加照片路径字段
 
-    // Getters and Setters
+    public Student(String id, String name, String birthday, String gender, String phone, String clazz, String dorm,
+            String origin, ImageIcon photo, String photoPath) {
+        this.id = id;
+        this.name = name;
+        this.birthday = birthday;
+        this.gender = gender;
+        this.phone = phone;
+        this.clazz = clazz;
+        this.dorm = dorm;
+        this.origin = origin;
+        this.photo = photo;
+        this.photoPath = photoPath; // 初始化照片路径字段
+    }
+
+    // Getter 和 Setter 方法
     public String getId() {
         return id;
     }
@@ -79,16 +93,19 @@ public class Student {
         this.origin = origin;
     }
 
+    public ImageIcon getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(ImageIcon photo) {
+        this.photo = photo;
+    }
+
     public String getPhotoPath() {
-        return photoPath;
+        return photoPath; // 添加照片路径的 getter 方法
     }
 
     public void setPhotoPath(String photoPath) {
-        this.photoPath = photoPath;
-        this.photo = new ImageIcon(photoPath);
-    }
-
-    public ImageIcon getPhoto() {
-        return photo;
+        this.photoPath = photoPath; // 添加照片路径的 setter 方法
     }
 }

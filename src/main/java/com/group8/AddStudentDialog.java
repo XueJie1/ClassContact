@@ -1,19 +1,27 @@
 package com.group8;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.util.Calendar;
 
 public class AddStudentDialog extends JDialog {
-    private JTextField idField, nameField, genderField, phoneField, clazzField, dormField, originField, photoField;
-    private JComboBox<Integer> yearComboBox, monthComboBox, dayComboBox;
-    private JButton browsePhotoButton;
+    private JTextField idField;
+    private JTextField nameField;
+    private JComboBox<String> yearComboBox;
+    private JComboBox<String> monthComboBox;
+    private JComboBox<String> dayComboBox;
+    private JComboBox<String> genderComboBox;
+    private JTextField phoneField;
+    private JTextField classField;
+    private JTextField dormField;
+    private JTextField originField;
+    private JLabel photoLabel;
+    private String photoPath;
 
     public AddStudentDialog(JFrame parent) {
-        super(parent, "录入学生信息", true);
-        setSize(400, 400);
+        super(parent, "添加学生", true);
+        setSize(400, 450);
         setLocationRelativeTo(parent);
 
         JPanel panel = new JPanel(new GridLayout(11, 2));
@@ -26,17 +34,30 @@ public class AddStudentDialog extends JDialog {
         nameField = new JTextField();
         panel.add(nameField);
 
+        panel.add(new JLabel("生日:"));
+        yearComboBox = new JComboBox<>(getYearOptions());
+        monthComboBox = new JComboBox<>(getMonthOptions());
+        dayComboBox = new JComboBox<>(getDayOptions());
+        JPanel birthdayPanel = new JPanel(new FlowLayout());
+        birthdayPanel.add(yearComboBox);
+        birthdayPanel.add(new JLabel("年"));
+        birthdayPanel.add(monthComboBox);
+        birthdayPanel.add(new JLabel("月"));
+        birthdayPanel.add(dayComboBox);
+        birthdayPanel.add(new JLabel("日"));
+        panel.add(birthdayPanel);
+
         panel.add(new JLabel("性别:"));
-        genderField = new JTextField();
-        panel.add(genderField);
+        genderComboBox = new JComboBox<>(new String[] { "男", "女" });
+        panel.add(genderComboBox);
 
         panel.add(new JLabel("电话:"));
         phoneField = new JTextField();
         panel.add(phoneField);
 
         panel.add(new JLabel("班级:"));
-        clazzField = new JTextField();
-        panel.add(clazzField);
+        classField = new JTextField();
+        panel.add(classField);
 
         panel.add(new JLabel("宿舍:"));
         dormField = new JTextField();
@@ -46,135 +67,82 @@ public class AddStudentDialog extends JDialog {
         originField = new JTextField();
         panel.add(originField);
 
-        panel.add(new JLabel("生日:"));
-        JPanel birthdayPanel = new JPanel(new FlowLayout());
-        yearComboBox = new JComboBox<>();
-        monthComboBox = new JComboBox<>();
-        dayComboBox = new JComboBox<>();
-        populateDateComboboxes();
-        birthdayPanel.add(yearComboBox);
-        birthdayPanel.add(new JLabel("年"));
-        birthdayPanel.add(monthComboBox);
-        birthdayPanel.add(new JLabel("月"));
-        birthdayPanel.add(dayComboBox);
-        birthdayPanel.add(new JLabel("日"));
-        panel.add(birthdayPanel);
-
-        panel.add(new JLabel("照片路径:"));
-        photoField = new JTextField();
-        panel.add(photoField);
-
-        browsePhotoButton = new JButton("浏览本地照片");
-        browsePhotoButton.addActionListener(new ActionListener() {
-            @Override
+        panel.add(new JLabel("照片:"));
+        photoLabel = new JLabel();
+        JButton browseButton = new JButton("浏览");
+        browseButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-                int result = fileChooser.showOpenDialog(AddStudentDialog.this);
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    photoField.setText(selectedFile.getAbsolutePath());
+                int returnValue = fileChooser.showOpenDialog(AddStudentDialog.this);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    photoPath = fileChooser.getSelectedFile().getAbsolutePath();
+                    ImageIcon photoIcon = new ImageIcon(
+                            new ImageIcon(photoPath).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+                    photoLabel.setIcon(photoIcon);
                 }
             }
         });
-        panel.add(browsePhotoButton);
+        JPanel photoPanel = new JPanel(new BorderLayout());
+        photoPanel.add(photoLabel, BorderLayout.CENTER);
+        photoPanel.add(browseButton, BorderLayout.EAST);
+        panel.add(photoPanel);
 
-        JButton saveButton = new JButton("保存");
-        saveButton.addActionListener(new ActionListener() {
+        add(panel, BorderLayout.CENTER);
+
+        JButton addButton = new JButton("添加");
+        addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (idField.getText().equals("") || nameField.getText().equals("") || genderField.getText().equals("") || phoneField.getText().equals("") || clazzField.getText().equals("") || dormField.getText().equals("") || originField.getText().equals("") || photoField.getText().equals("")) {
-                    JOptionPane.showMessageDialog(null, "部分内容尚未填写", "错误", JOptionPane.ERROR_MESSAGE);
+                if (idField.getText().isEmpty() || nameField.getText().isEmpty() || phoneField.getText().isEmpty()
+                        || classField.getText().isEmpty() || dormField.getText().isEmpty()
+                        || originField.getText().isEmpty()
+                        || yearComboBox.getSelectedItem() == null || monthComboBox.getSelectedItem() == null
+                        || dayComboBox.getSelectedItem() == null || genderComboBox.getSelectedItem() == null) {
+                    JOptionPane.showMessageDialog(AddStudentDialog.this, "请填写所有输入框");
                     return;
                 }
-                Student student = new Student();
-                student.setId(idField.getText());
-                student.setName(nameField.getText());
-                student.setGender(genderField.getText());
-                student.setPhone(phoneField.getText());
-                student.setClazz(clazzField.getText());
-                student.setDorm(dormField.getText());
-                student.setOrigin(originField.getText());
-                student.setPhotoPath(photoField.getText());
 
-                int year = (int) yearComboBox.getSelectedItem();
-                int month = (int) monthComboBox.getSelectedItem();
-                int day = (int) dayComboBox.getSelectedItem();
-                student.setBirthday(year + "-" + month + "-" + day);
-
-                ((StudentManagementSystem) parent).addStudent(student);
+                String id = idField.getText();
+                String name = nameField.getText();
+                String birthday = yearComboBox.getSelectedItem() + "-" + monthComboBox.getSelectedItem() + "-"
+                        + dayComboBox.getSelectedItem();
+                String gender = (String) genderComboBox.getSelectedItem();
+                String phone = phoneField.getText();
+                String clazz = classField.getText();
+                String dorm = dormField.getText();
+                String origin = originField.getText();
+                ImageIcon photo = (ImageIcon) photoLabel.getIcon();
+                ((StudentManagementSystem) parent).addStudent(
+                        new Student(id, name, birthday, gender, phone, clazz, dorm, origin, photo, photoPath));
                 dispose();
             }
         });
 
-        panel.add(saveButton);
-
-        add(panel);
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(addButton);
+        add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    private void populateDateComboboxes() {
-        // Populate year combobox
-        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        for (int i = currentYear; i >= 1900; i--) {
-            yearComboBox.addItem(i);
+    private String[] getYearOptions() {
+        String[] years = new String[100];
+        for (int i = 0; i < 100; i++) {
+            years[i] = String.valueOf(1925 + i);
         }
-
-        // Populate month combobox
-        for (int i = 1; i <= 12; i++) {
-            monthComboBox.addItem(i);
-        }
-
-        // Populate day combobox
-        updateDayComboBox();
-
-        // Add action listeners to year and month comboboxes to update the day combobox
-        yearComboBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                updateDayComboBox();
-            }
-        });
-
-        monthComboBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                updateDayComboBox();
-            }
-        });
+        return years;
     }
 
-    private void updateDayComboBox() {
-        int year = (int) yearComboBox.getSelectedItem();
-        int month = (int) monthComboBox.getSelectedItem();
-        int daysInMonth = getDaysInMonth(year, month);
-
-        dayComboBox.removeAllItems();
-        for (int i = 1; i <= daysInMonth; i++) {
-            dayComboBox.addItem(i);
+    private String[] getMonthOptions() {
+        String[] months = new String[12];
+        for (int i = 0; i < 12; i++) {
+            months[i] = String.valueOf(i + 1);
         }
+        return months;
     }
 
-    private int getDaysInMonth(int year, int month) {
-        switch (month) {
-            case 4: case 6: case 9: case 11:
-                return 30;
-            case 2:
-                if (isLeapYear(year)) {
-                    return 29;
-                } else {
-                    return 28;
-                }
-            default:
-                return 31;
+    private String[] getDayOptions() {
+        String[] days = new String[31];
+        for (int i = 0; i < 31; i++) {
+            days[i] = String.valueOf(i + 1);
         }
-    }
-
-    private boolean isLeapYear(int year) {
-        if (year % 4 == 0) {
-            if (year % 100 == 0) {
-                return year % 400 == 0;
-            } else {
-                return true;
-            }
-        } else {
-            return false;
-        }
+        return days;
     }
 }
