@@ -1,2 +1,29 @@
 *.xlsx
 *.docx
+# Maven target directory
+target/
+
+# Maven generated files
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+
+# Maven Wrapper (if used)
+.mvn/wrapper/maven-wrapper.jar
+
+# Eclipse-generated files
+.project
+.classpath
+
+# IntelliJ IDEA-generated files
+.idea/
+*.iml
+
+# NetBeans-generated files
+nb-configuration.xml
+
+# Visual Studio Code settings
+.vscode/
