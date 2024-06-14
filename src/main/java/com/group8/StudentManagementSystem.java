@@ -136,6 +136,22 @@ public class StudentManagementSystem extends JFrame {
                 student.getPhoto()
         };
         tableModel.addRow(rowData);
+
+        // 更新班级下拉框
+        updateClassComboBox(student.getClazz());
+    }
+
+    private void updateClassComboBox(String newClass) {
+        boolean classExists = false;
+        for (int i = 0; i < classComboBox.getItemCount(); i++) {
+            if (classComboBox.getItemAt(i).equals(newClass)) {
+                classExists = true;
+                break;
+            }
+        }
+        if (!classExists) {
+            classComboBox.addItem(newClass);
+        }
     }
 
     private void displayAllStudents() {
@@ -183,5 +199,13 @@ public class StudentManagementSystem extends JFrame {
                 tableModel.addRow(rowData);
             }
         }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new StudentManagementSystem().setVisible(true);
+            }
+        });
     }
 }
