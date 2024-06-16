@@ -5,16 +5,22 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class StudentManagementSystem extends JFrame {
     private DefaultTableModel tableModel;
     private JTable table;
-    private java.util.List<Student> studentList = new ArrayList<>();
+    private List<Student> studentList = new ArrayList<>();
     private JComboBox<String> classComboBox;
 
+    private ImageIcon icon = new ImageIcon(getClass().getResource("src/main/resources/images/"));
+
     public StudentManagementSystem() {
-        setTitle("学生信息管理系统");
+        setTitle("学生通讯录管理");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -120,6 +126,32 @@ public class StudentManagementSystem extends JFrame {
         panel.add(buttonPanel, BorderLayout.SOUTH);
 
         add(panel);
+
+        // 初始化数据
+        initData();
+    }
+
+    private void initData() {
+        String stu1PicPath = "src/main/resources/images/月下铸币大头.png";
+
+        String stu2PicPath = "src/main/resources/images/琪亚娜铸币大头3.png";
+        String stu3PicPath = "src/main/resources/images/观星铸币大头1.jpg";
+        ImageIcon stu1Icon = new ImageIcon(stu1PicPath);
+
+        ImageIcon stu2Icon = new ImageIcon(stu2PicPath);
+        ImageIcon stu3Icon = new ImageIcon(stu3PicPath);
+        // 示例学生数据
+        Student student1 = new Student("001", "张三", "2000-01-01", "女", "1234567890", "软件工程", "101", "北京", stu1Icon,
+                stu1PicPath);
+        Student student2 = new Student("002", "李四", "2001-02-02", "女", "0987654321", "计算机科学", "102", "上海", stu2Icon,
+                stu2PicPath);
+        Student student3 = new Student("003", "王五", "2002-03-03", "女", "1122334455", "网络工程", "103", "广州", stu3Icon,
+                stu3PicPath);
+
+        // 添加学生到列表和表格
+        addStudent(student1);
+        addStudent(student2);
+        addStudent(student3);
     }
 
     public void addStudent(Student student) {
