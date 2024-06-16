@@ -20,7 +20,7 @@
               <archive>
                 <manifest>
                   <mainClass>
-                    com.michealyang.jetty.embeded.EmbeddedJettyServer
+                    com.group8.Main
                   </mainClass>
                 </manifest>
               </archive>
