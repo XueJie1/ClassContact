@@ -17,7 +17,8 @@ public class StudentManagementSystem extends JFrame {
     private List<Student> studentList = new ArrayList<>();
     private JComboBox<String> classComboBox;
 
-    private ImageIcon icon = new ImageIcon(getClass().getResource("src/main/resources/images/"));
+    // private ImageIcon icon = new
+    // ImageIcon(getClass().getResource("src/main/resources/images/"));
 
     public StudentManagementSystem() {
         setTitle("学生通讯录管理");
@@ -85,7 +86,7 @@ public class StudentManagementSystem extends JFrame {
         JButton exportExcelButton = new JButton("导出Excel");
         exportExcelButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ExportToExcel.export(studentList);
+                ExportToExcelPic.export(studentList);
             }
         });
 
@@ -135,7 +136,7 @@ public class StudentManagementSystem extends JFrame {
         String stu1PicPath = "src/main/resources/images/月下铸币大头.png";
 
         String stu2PicPath = "src/main/resources/images/琪亚娜铸币大头3.png";
-        String stu3PicPath = "src/main/resources/images/观星铸币大头1.jpg";
+        String stu3PicPath = "src/main/resources/images/观星铸币大头1.png";
         ImageIcon stu1Icon = new ImageIcon(stu1PicPath);
 
         ImageIcon stu2Icon = new ImageIcon(stu2PicPath);

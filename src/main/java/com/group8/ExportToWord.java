@@ -1,7 +1,10 @@
 package com.group8;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.*;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -32,6 +35,20 @@ public class ExportToWord {
             // run.setText("照片路径: " + student.getPhotoPath());
             // run.addBreak();
             // run.addBreak();
+            // add pic start
+            try {
+                File image = new File(student.getPhotoPath());
+                FileInputStream imageData = new FileInputStream(image);
+                int imageType = XWPFDocument.PICTURE_TYPE_PNG;
+                int width = 450;
+                int height = 450;
+                run.addPicture(imageData, imageType, image.getName(), width, height);
+            } catch (InvalidFormatException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            // add pic end
         }
 
         try (FileOutputStream out = new FileOutputStream("students.docx")) {

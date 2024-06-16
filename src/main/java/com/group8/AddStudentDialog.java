@@ -77,7 +77,7 @@ public class AddStudentDialog extends JDialog {
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     photoPath = fileChooser.getSelectedFile().getAbsolutePath();
                     ImageIcon photoIcon = new ImageIcon(
-                            new ImageIcon(photoPath).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+                            new ImageIcon(photoPath).getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH));
                     photoLabel.setIcon(photoIcon);
                 }
             }

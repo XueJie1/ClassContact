@@ -38,7 +38,6 @@
     <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-  <!-- Maven POM文件示例 -->
   <dependencies>
     <!-- Apache POI用于操作Excel和Word文件 -->
     <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-schemas -->
